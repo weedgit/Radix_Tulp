@@ -1,0 +1,11 @@
+[submodule "matrix-js-sdk"]
+	path = matrix-js-sdk
+	url = https://github.com/matrix-org/matrix-js-sdk
+
+[submodule "matrix-react-sdk"]
+	path = matrix-react-sdk
+	url = https://github.com/matrix-org/matrix-react-sdk
+
+[submodule "element-web"]
+	path = element-web
+	url = https://github.com/vector-im/element-web

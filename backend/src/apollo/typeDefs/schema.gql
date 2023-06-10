@@ -1,0 +1,350 @@
+# SCALARS
+
+"""
+An ISO 8601-encoded UTC date with time string
+"""
+scalar DateTime
+
+"""
+An ISO 8601-encoded UTC date string
+"""
+scalar Date
+
+# INPUTS
+
+"""
+Provides data to create a new user.
+"""
+input CreateUserInput {
+  "The new user's unique email address."
+  email: String
+  "The new user's unique userID."
+  userId: String
+  "The new user's unique username."
+  username: String
+  "The new user's password."
+  password: String
+}
+
+"""
+Provides data to create a new user profile.
+"""
+input CreateProfileInput {
+  "The new user's unique userID."
+  userId: String
+  "The new user's unique username."
+  username: String
+  "The new user's unique name."
+  name: String
+  "The new user's Avatar URL."
+  avatar: String
+  "The new user's description."
+  description: String
+  "The new user's website."
+  website: String
+  "The new user's phone."
+  phone: String
+  "The new user's inbox_everyone toggle."
+  inbox_everyone: Boolean
+  "The new user's n_followers toggle."
+  n_followers: Boolean
+  "The new user's n_messages toggle."
+  n_messages: Boolean
+  "The new user's n_tulpUpdates toggle."
+  n_tulpUpdates: Boolean
+  "The new user's dark_theme toggle."
+  dark_theme: Boolean
+}
+
+input CreatePostCollection {
+  userId: String
+  collection_name: String
+  banner_image: String
+  description: String
+  properties: String
+  collaborators: String
+  total_creator_earnings_percentage_fee: String
+  payout_wallet_address: String
+}
+
+input CreatePost {
+  text: String
+  image: String
+  video: String
+  link: String
+  tags: String
+  price: String
+  userId: String
+  username: String
+  collectionId: String
+  collection_name: String
+  is_reblogged: String
+  post_owner_username: String
+  post_owner_userId: String
+}
+
+input CreatePostComment {
+  post_id: String
+  parent_post_id: String
+  post_userId: String
+  post_username: String
+  text: String
+  image: String
+  video: String
+  link: String
+  tags: String
+  userId: String
+  username: String
+  collectionId: String
+}
+
+input CreateSavePost {
+  post_id: String
+  saved_by_id: String
+  saved_by_username: String
+}
+
+input CreateLike {
+  post_id: String
+  user_id: String
+  liked_by_id: String
+  liked_by_username: String
+}
+
+input CreateDislike {
+  post_id: String
+  user_id: String
+  disliked_by_id: String
+  disliked_by_username: String
+}
+
+input CreateFollowing {
+  userId_followed: String
+  username_followed: String
+  followed_by_userId: String
+  followed_by_username: String
+}
+
+# OBJECTS
+
+"""
+A User contains metadata about a specific user.
+"""
+type User @key(fields: "id") {
+  "The unique ID of the user."
+  id: ID!
+  "The user's unique email."
+  email: String
+  "The user's unique userID."
+  userId: String
+  "The user's unique username."
+  username: String
+  "The user's password."
+  password: String
+  "The user's points."
+  points: String
+}
+
+"""
+A profile contains metadata about a specific user.
+"""
+type Profile @key(fields: "id") {
+  "The unique ID of the user's profile."
+  id: ID!
+  "The userId of the user."
+  userId: String
+  "The username of the user."
+  username: String
+  "The name of the user."
+  name: String
+  "The new user's Avatar URL."
+  avatar: String
+  "The description of the user."
+  description: String
+  "The website of the user."
+  website: String
+  "The phone of the user."
+  phone: String
+  "The inbox_everyone Boolean of the user."
+  inbox_everyone: Boolean
+  "The n_followers Boolean of the user."
+  n_followers: Boolean
+  "The n_messages Boolean of the user."
+  n_messages: Boolean
+  "The n_tulpUpdates Boolean of the user."
+  n_tulpUpdates: Boolean
+  "The dark_theme Boolean of the user."
+  dark_theme: Boolean
+  "The dark_theme Boolean of the user."
+  user_points: String
+}
+
+extend type Account @key(fields: "id") {
+  id: ID! @external
+  "Link to the account owner profile."
+  profile: Profile
+}
+
+type ProfileUpdate @key(fields: "id") {
+  "The unique ID of the user's profile."
+  id: String
+  "The response code of the update operation."
+  code: String
+  "The response message of the update operation."
+  message: String
+}
+
+type Collection @key(fields: "id") {
+  id: ID!
+  createdAt: String
+  userId: String
+  collection_name: String
+  banner_image: String
+  description: String
+  properties: String
+  collaborators: String
+  total_creator_earnings_percentage_fee: String
+  payout_wallet_address: String
+}
+
+type Post @key(fields: "id") {
+  id: ID!
+  createdAt: String
+  text: String
+  image: String
+  video: String
+  link: String
+  tags: String
+  price: String
+  userId: String
+  username: String
+  collectionId: String
+  comment_on_parent_post_id: String
+  comment_on_post_id: String
+  comment_on_post_username: String
+  is_reblogged: String
+  post_owner_username: String
+  post_owner_userId: String
+}
+
+type SavedPost @key(fields: "id") {
+  id: ID!
+  createdAt: String
+  post_id: String
+  saved_by_id: String
+  saved_by_username: String
+}
+
+type Like @key(fields: "id") {
+  id: ID!
+  createdAt: String
+  post_id: String
+  liked_by_id: String
+  liked_by_username: String
+}
+
+type Dislike @key(fields: "id") {
+  id: ID!
+  createdAt: String
+  post_id: String
+  disliked_by_id: String
+  disliked_by_username: String
+}
+type LikeDislike @key(fields: "id") {
+  likes: [Like]
+  disLikes: [Dislike]
+}
+
+type Follow @key(fields: "id") {
+  id: ID!
+  userId_followed: String
+  username_followed: String
+  followed_by_userId: String
+  followed_by_username: String
+  createdAt: String
+}
+
+type AdminUser @key(fields: "id") {
+  id: ID!
+  password: String
+  username: String
+}
+
+# QUERIES & MUTATIONS
+
+extend type Query {
+  "Retrieves All Users of the authenticated user."
+  getAllUsers: [Profile]
+  "Retrieves All Posts "
+  getAllPost: [Post]
+  "Retrieves All Collections"
+  getAllPostCollection: [Collection]
+}
+extend type Mutation {
+  "Creates a new user "
+  createUser(data: CreateUserInput!): User!
+  "Creates a new profile tied to an account."
+  createProfile(data: CreateProfileInput!): Profile!
+  "Get User by Username "
+  getUserByUsername(username: String!): User!
+  "Fetch collections by user ID"
+  getAllCollectionsById(userId: String!): [Collection]
+  "Fetch profile by user ID"
+  getProfileByUserId(userId: String!): Profile!
+  "Create Post Collection"
+  createPostCollection(data: CreatePostCollection): Collection!
+  "Create Post"
+  createPost(data: CreatePost): Post!
+  "Create Post Comment"
+  createPostComment(data: CreatePostComment): Post!
+  "Fetch Post Comment By Post ID"
+  getPostsCommentsById(id: String!): [Post]
+  "Fetch Posts By Collection ID"
+  getPostsByCollectionId(collectionId: String!): [Post]
+
+  "Create Post Save"
+  createSavePost(data: CreateSavePost): SavedPost!
+
+  "Create Like"
+  createLike(data: CreateLike): Like!
+  "Create Dislike"
+  createDislike(data: CreateDislike): Dislike!
+
+  "Remove Like"
+  removeLike(id: String!, userID: String!): Boolean!
+  "Remove Dislike"
+  removeDislike(id: String!, userID: String!, disliked_by_id: String!): Boolean!
+
+  "Fetch All Likes And Dislikes Of Post"
+  getLikesDislikesByPostId(post_id: String!): LikeDislike!
+
+  "Create Following"
+  createUserFollowing(data: CreateFollowing): Follow!
+
+  "Remove Following"
+  removeUserFollowing(id: String): Boolean!
+
+  "GET User Following"
+  getUserFollowing(followed_by_userId: String): [Follow]
+
+  "GET User Followers"
+  getUserFollowers(userId_followed: String): [Follow]
+
+  "GET Admin User By Username"
+  getAdminUserByUsername(username: String!): AdminUser!
+
+  "remove user by userId"
+  removeUser(userId: String!): Boolean!
+
+  "remove post by userId"
+  removePost(userId: String!, comment_on_post_id: String!): Boolean!
+
+  "Fetch collection by collectionId"
+  getCollectionDetails(collectionId: String!): Collection!
+
+  "remove collection by collectionId"
+  removeCollection(collectionId: String!): Boolean!
+
+  "GET ALL SAVED POSTS"
+  getAllSavedPostsByUserId(userId: String!): [SavedPost]!
+}
